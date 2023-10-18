@@ -26,7 +26,7 @@ model {
 views {
 
   view cloud_graphql of graphql {
-    title "[context] GraphQL"
+    title "[context] Backend GraphQL"
 
     include
       *,
@@ -34,20 +34,47 @@ views {
       cloud.backend
 
     exclude
-      -> amazon
+      -> amazon.*
 
     include
-      graphql -> amazon
+      graphql -> amazon.*
 
     style * {
       color secondary
     }
 
-    style cloud, cloud.backend {
+    style cloud, amazon, cloud.backend {
       color muted
     }
 
     style graphql {
+      color green
+    }
+  }
+
+  view cloud_cms of cms {
+    title "[context] Backend CMS"
+
+    include
+      *,
+      cloud,
+      cloud.backend      
+
+    exclude
+      -> amazon.*
+
+    include
+      cms -> amazon.*
+
+    style * {
+      color secondary
+    }
+
+    style cloud, amazon, cloud.backend {
+      color muted
+    }
+
+    style cms {
       color green
     }
   }
