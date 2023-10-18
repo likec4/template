@@ -1,0 +1,13 @@
+{
+  "name": "likec4-template",
+  "version": "0.0.1",
+  "private": true,
+  "description": "LikeC4 template",
+  "scripts": {
+    "dev": "likec4 serve .",
+    "build": "likec4 build ."
+  },
+  "dependencies": {
+    "likec4": "next"
+  }
+}
