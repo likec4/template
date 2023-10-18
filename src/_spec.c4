@@ -11,7 +11,6 @@ specification {
   element component
   element service
   element app
-  element lambdaFn
 
   element externalSystem {
     style {
@@ -40,4 +39,6 @@ specification {
     }
   }
 
+  tag team-a
+  tag team-b
 }

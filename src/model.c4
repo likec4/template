@@ -21,6 +21,8 @@ model {
       }
 
       dashboard = app 'Customer Dashboard' {
+        #team-a
+        
         technology 'Nextjs'
         description 'Web application, that allows customers to interact with the cloud system'
         style {
@@ -33,7 +35,9 @@ model {
       customer -> dashboard 'open in browser'
 
       mobile = mobile 'Mobile App' {
+        #team-b
         description 'The mobile app of the cloud system'
+
         -> amazon.cognito 'authenticate'
         -> backend.graphql 'fetch data'
       }
