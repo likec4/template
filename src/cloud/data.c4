@@ -19,7 +19,7 @@ model {
 views {
 
   view cloud_data of cloud.data {
-    title "[context] Data Services"
+    title "Data Services"
     include
         *,
         cloud,

@@ -4,8 +4,9 @@
   "private": true,
   "description": "LikeC4 template",
   "scripts": {
-    "dev": "likec4 serve .",
-    "build": "likec4 build ."
+    "start": "likec4 serve",
+    "dev": "likec4 serve",
+    "build": "likec4 build"
   },
   "dependencies": {
     "likec4": "^1.0.0-build.3"

@@ -3,7 +3,7 @@ model {
   extend cloud.reporting {
 
     report_subscriptions = component 'Subscriptions Report' {
-        -> cloud.billing.subscriptions 'sync daily'
+      -> cloud.billing.subscriptions 'sync daily'
     }
 
   }
@@ -13,7 +13,7 @@ model {
 views {
 
   view reporting of cloud.reporting {
-    title "[context] Reporting"
+    title "Reporting services"
     include
         *,
         cloud
