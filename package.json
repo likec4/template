@@ -9,6 +9,6 @@
     "build": "likec4 build"
   },
   "dependencies": {
-    "likec4": "^1.0.0-build.3"
+    "likec4": "latest"
   }
 }
