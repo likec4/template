@@ -1,172 +1,67 @@
 model {
 
-  customer = actor 'Cloud Customer' {
-    description 'The regular customer of the system'
+  customer = actor 'Customer' {
+    description 'Customer of the cloud system'
   }
 
-  cloud = softwareSystem 'Cloud System' {
+  cloud = system 'Cloud System' {
     description '
       Our SaaS platfrom that allows
       customers to interact with
       the latest technologies
     '
 
-    ui = container 'Frontend' {
-      description '
-        All the frontend applications
-        of the cloud system
-      '
+    ui = component 'Frontend' {
+      description 'All the frontend applications of the cloud system'
       style {
         shape browser
       }
-
-      dashboard = app 'Customer Dashboard' {
-        #team-a
-        
-        technology 'Nextjs'
-        description 'Web application, that allows customers to interact with the cloud system'
-        style {
-          shape browser
-        }
-
-        -> amazon.cognito 'authenticate'
-        -> backend.graphql 'fetch data'
-      }
-      customer -> dashboard 'open in browser'
-
-      mobile = mobile 'Mobile App' {
-        #team-b
-        description 'The mobile app of the cloud system'
-
-        -> amazon.cognito 'authenticate'
-        -> backend.graphql 'fetch data'
-      }
-      customer -> mobile 'open on mobile device'
     }
 
-    backend = container 'Backend' {
+    backend = component 'Backend' {
       description 'The backend services of the cloud system'
     }
 
-    reporting = service 'Reporting' {
-      technology 'PowerBI'
-      description 'Reporting services'
-    }
-
-    data = container 'Data Services' {
-      description '
-        Data storage
-        and data processing
-      '
-    }
-
-    billing = service 'Billing' {
-      description '
-        Billing services, process
-        payments and subscriptions
-      '
-    }
-
-    backoffice = service 'Back Office' {
-      description '
-        Back office services,
-        providing tenant management,
-        customer support and billing
-      '
-      style {
-        shape browser
-      }
-    }
   }
 
-  customer -> cloud 'use and pay'
-  cloud -> amazon 'use services'
+  customer -> cloud 'uses and pays'
+  customer -> ui 'uses web and mobile'
+
+  provider = system 'Managed Services' {
+    description '
+      Provider of managed services
+      and cloud hosting
+    '
+  }
+
+  cloud -> provider 'uses services'
 }
 
 views {
 
   view index {
-    title "Landscape"
+    title 'Landscape'
     include *
   }
 
-  view customer of customer {
-    title "Customer interactions"
-    include
-        *,
-        ui,
-        -> ui.*
-    exclude cloud
-
-    style * {
-      color secondary
-    }
-    style ui {
-      color muted
-    }
-    style customer {
-      color green
-    }
-  }
-
   view cloud of cloud {
-    title "Cloud System"
-    include
-      *
-    exclude
-      ui.* -> amazon
+    title 'Context: Cloud System'
+    include *
 
     style * {
       color secondary
     }
-
-    style cloud {
-      color muted
-    }
-
-    style cloud.* {
+    style cloud, cloud.* {
       color green
     }
   }
 
-  view cloud_ui of ui {
-    title "Cloud Frontend Applications"
-    include *, cloud
-
-    style * {
-      color secondary
-    }
-    style cloud, ui {
-      color muted
-    }
-    style ui.* {
-      color green
-    }
-  }
-
-  view cloud_backend of backend {
-    title "Backend Services"
+  view provider of provider {
+    title 'Context: Managed Services'
     include
-      *, cloud,
-      ui, ui.* -> backend,
-      billing, billing.* -> backend,
-      backoffice, backoffice.* -> backend,
-      amazon, backend.* -> amazon.*
-
-    exclude
-      ui.* -> amazon
-
-    style * {
-      color secondary
-    }
-
-    style cloud, billing, ui, backoffice, amazon {
-      color muted
-    }
-
-    style backend, backend.* {
-      color green
-    }
+      *,
+      cloud,
+      cloud.* -> provider.*
   }
 
 }

@@ -6,18 +6,14 @@ specification {
     }
   }
 
-  element softwareSystem
-  element container
+  element system
   element component
   element service
-  element app
-
-  element externalSystem {
+  element webapp {
     style {
-      color gray
+      shape browser
     }
   }
-
   element mobile {
     style {
       shape mobile
@@ -28,17 +24,9 @@ specification {
       shape storage
     }
   }
-  element stream {
+  element db_table {
     style {
-      shape queue
+      shape storage
     }
   }
-  element queue {
-    style {
-      shape queue
-    }
-  }
-
-  tag team-a
-  tag team-b
 }

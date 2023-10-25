@@ -6,7 +6,8 @@
   "scripts": {
     "start": "likec4 serve",
     "dev": "likec4 serve",
-    "build": "likec4 build"
+    "build": "likec4 build",
+    "export:png": "likec4 export png -o ./png"
   },
   "dependencies": {
     "likec4": "latest"
