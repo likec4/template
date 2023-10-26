@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   # Build job
-  build:
+  build-pages:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,23 +33,28 @@ jobs:
         with:
           node-version: "20"
       - name: Setup Pages
+        id: pages
         uses: actions/configure-pages@v3
       - name: Install dependencies
         run: npm install
       - name: Build
-        run: npm run build
+        run: npx likec4 build -o ./dist --base "${{ steps.pages.outputs.base_path }}"
+      # GitHub Pages doesn't allow to configure routing for single page apps,
+      # So we copy index.html to 404.html to make it work
+      - name: Custom 404 page
+        run: cp ./dist/index.html ./dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
           path: ./dist
 
   # Deployment job
-  deploy:
+  deploy-pages:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-pages
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
