@@ -44,31 +44,3 @@ model {
 
   cloud -> aws 'uses services'
 }
-
-views {
-
-  view index {
-    title 'System Landscape'
-    include *
-  }
-
-  view cloud of cloud {
-    title 'Context: Cloud System'
-    include *
-    style cloud, cloud.* {
-      color green
-    }
-  }
-
-  view aws of aws {
-    title 'Context: Amazon Web Services'
-    include
-      *,
-      cloud,
-      cloud.* -> aws.*
-    style aws, cloud {
-      color muted
-    }
-  }
-
-}

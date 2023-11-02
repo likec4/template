@@ -3,8 +3,8 @@
 This template is a simple example of how to use LikeC4.  
 Contains:
 
-- LikeC4 sources ([`src`](./src/))
-- Workflow to deploy to github pages ([`pages.yml`](./.github/workflows/pages.yml))
+- LikeC4 sources ([`/src`](./src/))
+- Deploy to github pages ([`pages.yml`](./.github/workflows/pages.yml))
 
 Demo - [https://template.likec4.dev](https://template.likec4.dev/view/cloud)
 
