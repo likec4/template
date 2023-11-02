@@ -1,20 +1,21 @@
 model {
 
-  extend provider {
+  extend aws {
     pg = database 'PostgreSQL' {
+      technology 'AWS Aurora PostgreSQL'
       description 'Database for storing relational data'
       style {
         icon https://icons.terrastruct.com/dev%2Fpostgresql.svg
       }
 
       tbl_customers = db_table '[ customers ]' {
-        technology 'private schema'
+        technology '<< private schema >>'
       }
 
       tbl_sessions = db_table '[ sessions ]' {
-        technology 'private schema'
+        technology '<< private schema >>'
         description '
-          Active sessions
+          Active sessions of logged in customers
         '
       }
       tbl_sessions -> tbl_customers 'belongs to'
@@ -26,8 +27,9 @@ model {
     graphql = service 'GraphQL API' {
       description 'The GraphQL API of the cloud system'
 
-      -> provider.pg.tbl_sessions 'reads/writes'
-      -> provider.pg.tbl_customers 'reads/writes'
+      -> aws.pg.tbl_sessions 'reads/writes'
+      -> aws.pg.tbl_customers 'reads/writes'
+      -> aws.cognito 'authorizes'
     }
 
   }
@@ -41,15 +43,16 @@ views {
     include
       *,
       cloud,
-      provider,
-      provider.pg,
-      cloud.backend.* -> provider.pg.*
+      aws,
+      aws.pg,
+      cloud.backend -> aws.*,
+      cloud.backend -> aws.pg.*
 
     style * {
       color secondary
     }
 
-    style cloud, provider, provider.pg  {
+    style cloud, aws, aws.pg  {
       color muted
     }
 
@@ -58,21 +61,23 @@ views {
     }
   }
 
-  view provider_pg  of provider.pg {
+  view aws_pg of aws.pg {
     title 'Databases'
     include
       *,
-      cloud.* -> provider.pg.*
+      aws,
+      cloud,
+      cloud.* -> aws.pg
 
     style * {
       color secondary
     }
 
-    style cloud, provider, provider.pg  {
+    style cloud, aws, aws.pg  {
       color muted
     }
 
-    style provider.pg.* {
+    style aws.pg.* {
       color green
     }
   }

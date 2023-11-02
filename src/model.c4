@@ -27,41 +27,48 @@ model {
   customer -> cloud 'uses and pays'
   customer -> ui 'uses web and mobile'
 
-  provider = system 'Managed Services' {
+  aws = system 'Amazon Web Services' {
     description '
-      Provider of managed services
-      and cloud hosting
+      Cloud Infrastructure and
+      Managed Services
     '
+    style {
+      color amber
+      icon https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg
+    }
+
+    cognito = component 'Cognito' {
+      description 'Provides user management and authentication'
+    }
   }
 
-  cloud -> provider 'uses services'
+  cloud -> aws 'uses services'
 }
 
 views {
 
   view index {
-    title 'Landscape'
+    title 'System Landscape'
     include *
   }
 
   view cloud of cloud {
     title 'Context: Cloud System'
     include *
-
-    style * {
-      color secondary
-    }
     style cloud, cloud.* {
       color green
     }
   }
 
-  view provider of provider {
-    title 'Context: Managed Services'
+  view aws of aws {
+    title 'Context: Amazon Web Services'
     include
       *,
       cloud,
-      cloud.* -> provider.*
+      cloud.* -> aws.*
+    style aws, cloud {
+      color muted
+    }
   }
 
 }

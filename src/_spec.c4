@@ -3,10 +3,11 @@ specification {
   element actor {
     style {
       shape person
+      color secondary
     }
   }
 
-  element system
+  element system  
   element component
   element service
   element webapp {
@@ -28,5 +29,5 @@ specification {
     style {
       shape storage
     }
-  }
+  }  
 }

@@ -2,9 +2,11 @@
 name: Deploy Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes targeting the default branch and c4 files
   push:
     branches: ["main"]
+    paths:
+      - "**.c4"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -31,14 +33,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: 20
+          cache: 'npm'
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
-      - name: Install dependencies
-        run: npm install
       - name: Build
-        run: npx likec4 build -o ./dist --base "${{ steps.pages.outputs.base_path }}"
+        run: npx likec4@latest build -o ./dist --base "${{ steps.pages.outputs.base_path }}"
       # GitHub Pages doesn't allow to configure routing for single page apps,
       # So we copy index.html to 404.html to make it work
       - name: Custom 404 page
