@@ -1,0 +1,7 @@
+name: on redeploy
+on:
+  repository_dispatch:
+    types: [redeploy]
+jobs:
+  pages:
+    uses: ./.github/workflows/pages.yml
