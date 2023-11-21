@@ -39,11 +39,11 @@ jobs:
         id: pages
         uses: actions/configure-pages@v3
       - name: Build
-        run: npx likec4@latest build -o ./dist --base "${{ steps.pages.outputs.base_path }}"
-      # GitHub Pages doesn't allow to configure routing for single page apps,
-      # So we copy index.html to 404.html to make it work
-      - name: Custom 404 page
-        run: cp ./dist/index.html ./dist/404.html
+        uses: likec4/actions@v1
+        with:
+          action: build
+          output: dist
+          base: ${{ steps.pages.outputs.base_path }}          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
