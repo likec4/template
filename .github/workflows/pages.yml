@@ -18,8 +18,8 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+# Allow only one concurrent deployment, skipping runs queued between the run in progress and the latest queued.
+# However, do NOT cancel in-progress runs, as we want to allow these production deployments to be completed.
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -38,12 +38,18 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
+        
       - name: Build
         uses: likec4/actions@v1
         with:
           action: build
           output: dist
-          base: ${{ steps.pages.outputs.base_path }}          
+          # required if you don't set a custom domain for the repository
+          # https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites
+          base: ${{ steps.pages.outputs.base_path }}
+          # (optional) by default, the bundled version is used, which is faster due to skipping the installation
+          likec4-version: latest
+          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
