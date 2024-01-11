@@ -4,7 +4,8 @@ model {
     description 'Customer of the cloud system'
   }
 
-  cloud = system 'Cloud System' {
+  cloud = system 'Cloud System' {    
+    link https://likec4.dev
     description '
       Our SaaS platfrom that allows
       customers to interact with
@@ -18,7 +19,8 @@ model {
       }
     }
 
-    backend = component 'Backend' {
+    backend = component 'Backend' {      
+      link https://github.com/likec4/likec4
       description 'The backend services of the cloud system'
     }
 
@@ -28,6 +30,7 @@ model {
   customer -> ui 'uses web and mobile'
 
   aws = system 'Amazon Web Services' {
+    link https://aws.amazon.com/
     description '
       Cloud Infrastructure and
       Managed Services
@@ -38,6 +41,7 @@ model {
     }
 
     cognito = component 'Cognito' {
+      link https://aws.amazon.com/cognito/
       description 'Provides user management and authentication'
     }
   }

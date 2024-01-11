@@ -2,9 +2,10 @@
 model {
 
   extend aws {
-    pg = database 'PostgreSQL' {
+    pg = database 'PostgreSQL' {      
       technology 'AWS Aurora PostgreSQL'
       description 'Database for storing relational data'
+      link https://aws.amazon.com/rds/postgresql/
       style {
         icon https://icons.terrastruct.com/dev%2Fpostgresql.svg
       }
@@ -66,19 +67,22 @@ views {
     title 'Databases'
     include
       *,
-      aws,
+      aws with {
+        title 'AWS - PostgreSQL'
+      },
       cloud,
-      cloud.* -> aws.pg
+      cloud.* -> pg.*
+    exclude pg
 
     style * {
       color secondary
     }
 
-    style cloud, aws, aws.pg  {
+    style cloud, aws  {
       color muted
     }
 
-    style aws.pg.* {
+    style pg.* {
       color green
     }
   }

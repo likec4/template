@@ -13,6 +13,8 @@ model {
     mobile = mobile 'Mobile App' {
       technology 'Flutter'
       description 'The mobile app of the cloud system'
+      link https://flutter.dev/
+      
       -> cloud.backend.graphql 'fetches data'
       -> aws.cognito 'authenticates'
     }
@@ -26,12 +28,13 @@ model {
 views {
 
   view cloud_ui of cloud.ui {
-
     include
       *,
       cloud,
       aws,
       cloud.ui -> aws.*
+    exclude
+      cloud.ui
 
     style * {
       color secondary
@@ -41,7 +44,7 @@ views {
       color muted
     }
 
-    style cloud.ui, cloud.ui.* {
+    style cloud.ui.* {
       color green
     }
   }

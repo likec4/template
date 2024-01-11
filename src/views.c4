@@ -22,6 +22,9 @@ views {
     style aws, cloud {
       color muted
     }
+    style aws.* {
+      color green
+    }
   }
 
 }
