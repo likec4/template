@@ -7,8 +7,16 @@ specification {
     }
   }
 
-  element system  
-  element component
+  element system {
+    style {
+      opacity 20%
+    }
+  }
+  element component {
+    style {
+      opacity 20%
+    }
+  }
   element service
   element webapp {
     style {
@@ -30,4 +38,8 @@ specification {
       shape storage
     }
   }  
+
+  relationship solid {
+    line solid
+  }
 }

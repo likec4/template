@@ -30,11 +30,13 @@ views {
   view cloud_ui of cloud.ui {
     include
       *,
-      cloud,
-      aws,
-      cloud.ui -> aws.*
+      ui with {
+        navigateTo cloud
+      },
+      aws._,
+
     exclude
-      cloud.ui
+      cloud.backend -> aws.cognito
 
     style * {
       color secondary
@@ -44,8 +46,11 @@ views {
       color muted
     }
 
-    style cloud.ui.* {
+    style ui, ui.* {
       color green
     }
+    style aws, aws.* {
+      color amber
+    }    
   }
 }

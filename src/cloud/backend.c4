@@ -17,10 +17,15 @@ model {
       tbl_sessions = db_table '[ sessions ]' {
         technology '<< private schema >>'
         description '
-          Active sessions of logged in customers
+          Active sessions of
+          authenticated customers
         '
       }
-      tbl_sessions -> tbl_customers 'belongs to'
+      tbl_sessions -> tbl_customers 'references to' {
+        style {
+          line solid
+        }
+      }
     }
   }
 
@@ -44,22 +49,25 @@ views {
 
     include
       *,
-      cloud,
-      aws,
-      aws.pg,
-      cloud.backend -> aws.*,
-      cloud.backend -> aws.pg.*
+      aws._,
+      aws.pg._,
+      backend with {
+        navigateTo cloud
+      }
 
     style * {
-      color secondary
-    }
-
-    style cloud, aws, aws.pg  {
-      color muted
+      color amber
+      opacity 10%
     }
 
     style cloud.backend, cloud.backend.* {
       color green
+    }
+    style aws.pg {
+      border solid
+    }
+    style cloud.ui {
+      color secondary
     }
   }
 
@@ -67,18 +75,19 @@ views {
     title 'Databases'
     include
       *,
-      aws with {
+      pg with {
         title 'AWS - PostgreSQL'
+        navigateTo aws
       },
       cloud,
       cloud.* -> pg.*
-    exclude pg
 
     style * {
       color secondary
+      opacity 10%
     }
 
-    style cloud, aws  {
+    style cloud, pg  {
       color muted
     }
 

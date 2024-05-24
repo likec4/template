@@ -1,8 +1,10 @@
 views {
 
-  view index {
+  view index of customer {
     title 'System Landscape'
-    include *
+    include
+      *,
+      element.kind = system
   }
 
   view cloud of cloud {
@@ -18,13 +20,32 @@ views {
     include
       *,
       cloud,
-      cloud.* -> aws.*
-    style aws, cloud {
+      cloud.* -> aws
+
+    style * {
       color muted
+      border dotted
+      opacity 5%
     }
     style aws.* {
       color green
     }
+    style cloud.* {
+      color secondary
+    }
   }
+
+  view aws_cognito of aws.cognito {
+    include
+      *,
+      cloud.* ->
+
+    style cloud.* {
+      color secondary
+    }
+    style aws.cognito {
+      color amber
+    }
+  }  
 
 }
