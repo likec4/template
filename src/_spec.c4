@@ -8,10 +8,22 @@ specification {
   }
 
   element system {
+    notation "Software System"
     style {
       opacity 20%
     }
   }
+
+  element external-system {
+    notation "External Software System"
+    style {
+      opacity 20%
+      color secondary
+    }
+  }
+
+  element application
+
   element component {
     style {
       opacity 20%
@@ -19,25 +31,29 @@ specification {
   }
   element service
   element webapp {
+    notation "Web Application"
     style {
       shape browser
     }
   }
   element mobile {
+    notation "Mobile Application"
     style {
       shape mobile
     }
   }
   element database {
+    notation "Database"
     style {
       shape storage
     }
   }
   element db_table {
+    notation "Database Table"
     style {
       shape storage
     }
-  }  
+  }
 
   relationship solid {
     line solid

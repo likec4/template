@@ -7,6 +7,7 @@
     "start": "likec4 serve",
     "dev": "likec4 serve",
     "build": "likec4 build",
+    "generate:react": "likec4 generate react",
     "export:png": "likec4 export png -o ./png"
   },
   "devDependencies": {

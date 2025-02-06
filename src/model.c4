@@ -1,50 +1,158 @@
 model {
 
   customer = actor 'Customer' {
-    description 'Customer of the cloud system'
+    -> boutique.frontend 'browses and buys products' {
+      navigateTo place-order
+    }
+    -> boutique.frontend.catalogue 'browses products'
+    -> boutique.frontend.checkout 'buys products' {
+      navigateTo place-order
+    }
+    -> boutique.frontend.profile 'manages account and reviews history'
   }
+  customer -> boutique 'uses'
 
-  cloud = system 'Cloud System' {    
-    link https://likec4.dev
+  boutique = system 'Online Boutique System' {
     description '
-      Our SaaS platfrom that allows
-      customers to interact with
-      the latest technologies
+      E-commerce app for browsing items, add them to the cart,
+      and purchasing them.
     '
 
-    ui = component 'Frontend' {
-      description 'All the frontend applications of the cloud system'
-      style {
-        shape browser
+    email = service 'Email Service' {
+      description 'Sends emails to customers using templates and customer data.'
+
+      -> email-provider 'delegates email sending'
+    }
+
+    checkout = service 'Checkout Service' {
+      icon tech:nodejs
+      description 'Retrieves user cart, prepares order and orchestrates the payment, shipping and the email notification.'
+
+      -> payments.processor 'sends payment request' {
+        navigateTo place-order
+      }
+      -> shipping 'sends checkout data' {
+        navigateTo order-fulfillment
+      }      
+      -> email 'sends order confirmation'
+      -> actionLog 'sends activity data'
+    }
+
+    cart = service 'Cart Service' {
+      icon tech:nodejs
+      description "Stores the items in the user's shopping cart in Redis and retrieves it."
+
+      api = component 'Cart API' {
+      }
+
+      cache = service 'Cart Cache' {
+        description 'Stores cart data.'
+        icon tech:redis
+      }
+
+      api -> cache 'gets cart data'
+      api -> catalogue 'gets product data'
+      api -> actionLog 'sends activity data'
+    }
+
+    actionLog = service 'Action Log Service' {
+      icon tech:go
+      description 'Manages user activity and search history.'
+    }
+
+    payments = service 'Payment Service' {
+      icon tech:scala
+      description 'Charges the given credit card info with the given amount and returns a transaction ID.'
+
+      processor = component 'Payment Processor' {
+        description 'Charges the given credit card info with the given amount and returns a transaction ID.'
+        -> payment-gateway 'processes payments' {
+          navigateTo order-fulfillment
+        }
+        -> db.orders 'updates order status'
+      }
+
+      currency = service 'Currency Service' {
+        description 'Converts one money amount to another currency.'
       }
     }
 
-    backend = component 'Backend' {      
-      link https://github.com/likec4/likec4
-      description 'The backend services of the cloud system'
+    shipping = service 'Shipping Service' {
+      icon tech:net
+      description 'Gives shipping cost estimates based on the shopping cart. Ships items to the given address.'
+
+      -> db.orders 'updates shipping data'
     }
 
+    catalogue = service 'Product Catalogue Service' {
+      icon tech:fast-api
+      description 'Provides a list of products and ability to search products and get individual products.'
+      -> db.products 'gets products'
+    }
+
+    frontend = webapp 'Frontend' {
+      icon tech:vue
+      description 'Provides access to boutique services.'
+
+      -> actionLog 'sends user activity data'
+
+      catalogue = component 'Product Catalogue' {
+        icon tech:vue
+        description 'Displays products and allows users to search and view individual products.'
+      }
+
+      checkout = component 'Checkout' {
+        icon tech:vue
+        description 'Allows users to review their cart, enter shipping information, and complete the purchase.'
+      }
+
+      profile = component 'User Profile' {
+        icon tech:vue
+        description 'Displays user information and order history.'
+      }
+
+      -> cart 'gets cart data'
+      catalogue -> boutique.catalogue 'gets product data'
+      catalogue -> cart.api 'puts items in cart'
+      checkout -> payments.currency 'gets exchange rates'
+      checkout -> cart.api 'gets cart data'
+      checkout -> boutique.checkout 'sends checkout information' {
+        navigateTo place-order
+      }
+      checkout -> shipping 'gets shipping cost'
+    }
+
+    db = database 'Boutique Database' {
+      icon tech:postgresql
+      description 'Stores all product, order, and user data.'
+
+      products = db_table 'Products' {
+        description 'Stores all product data.'
+      }
+
+      orders = db_table 'Orders' {
+        description 'Stores all order data.'
+      }
+
+      users = db_table 'Users' {
+        description 'Stores all user data.'
+      }
+
+      orders -> products
+      orders -> users
+    }
   }
 
-  customer -> cloud 'uses and pays'
-  customer -> ui 'uses web and mobile'
-
-  aws = system 'Amazon Web Services' {
-    link https://aws.amazon.com/
+  payment-gateway = external-system 'Payment Gateway' {
     description '
-      Cloud Infrastructure and
-      Managed Services
+      Platform to process online payments
     '
-    style {
-      color amber
-      icon https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg
-    }
-
-    cognito = component 'Cognito' {
-      link https://aws.amazon.com/cognito/
-      description 'Provides user management and authentication'
-    }
   }
 
-  cloud -> aws 'uses services'
+  email-provider = external-system 'Email Provider' {
+    description '
+      3rd Party Platform to send transactional emails
+    '
+  }
+
 }

@@ -1,3 +1,5 @@
+# This workflow is triggered by a repository_dispatch event
+# from likec4/likec4 repository when new version released
 name: on redeploy
 on:
   repository_dispatch:
