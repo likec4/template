@@ -7,19 +7,35 @@ views {
   }
 
   view customer of customer {
+    description '
+      Customer interactions with the system.
+    '
     include
       *,
       -> boutique.*
   }
 
   view boutique of boutique {
+    description '
+      E-commerce app for browsing items, add them to the cart,
+      and purchasing them.
+    '
     include
-      *
+      *,
+      customer with {
+        size sm
+      }
     exclude
       frontend -> actionLog,
       payment-gateway,
-      db,
       email-provider
+
+    style db, frontend {
+      multiple true
+    }
+    style boutique {
+      opacity 0%
+    }
   }
 
   view frontend of boutique.frontend {
@@ -38,6 +54,11 @@ views {
   }
 
   view checkout of boutique.checkout {
+    description '
+      Retrieves user cart, prepares order and
+      orchestrates the payment, shipping and the email notification.
+    '
+    link https://github.com/likec4/template 'Repository'
     include
       *,
       boutique,
@@ -64,7 +85,7 @@ views {
       boutique.frontend.* -> cart.*,
       boutique,
       customer
-     
+
     style * {
       color secondary
       opacity 0%
