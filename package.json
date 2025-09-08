@@ -4,13 +4,20 @@
   "private": true,
   "description": "LikeC4 template",
   "scripts": {
-    "start": "likec4 serve",
-    "dev": "likec4 serve",
+    "start": "likec4 start",
+    "dev": "likec4 start",
     "build": "likec4 build",
-    "generate:react": "likec4 generate react",
+    "test": "vitest run",
+    "postinstall": "npm run generate:model",
+    "generate:model": "likec4 gen model -o ./test/likec4-model.ts",
+    "generate:relationships-csv": "likec4 gen relationships-csv && open ./relationships.csv",
+    "generate:react": "likec4 generate react -o ./react/likec4-views.mjs",
     "export:png": "likec4 export png -o ./png"
   },
   "devDependencies": {
-    "likec4": "latest"
+    "@types/node": "^24.3.1",
+    "likec4": "latest",
+    "vitest": "^3.2.4",
+    "typescript": "^5.9.2"
   }
 }

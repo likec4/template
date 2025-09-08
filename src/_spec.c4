@@ -3,7 +3,7 @@ specification {
   element actor {
     style {
       shape person
-      color secondary
+      color green
     }
   }
 
@@ -18,7 +18,7 @@ specification {
     notation "External Software System"
     style {
       opacity 20%
-      color secondary
+      color muted
     }
   }
 
@@ -29,14 +29,19 @@ specification {
       opacity 20%
     }
   }
-  element service
+  element service {
+    link https://github.com/likec4/template 'Repository'
+  }
+
   element webapp {
+    #teamA
     notation "Web Application"
     style {
       shape browser
     }
   }
   element mobile {
+    #teamA
     notation "Mobile Application"
     style {
       shape mobile
@@ -44,20 +49,26 @@ specification {
   }
   element database {
     notation "Database"
+    technology "PostgreSQL"
     style {
       shape storage
+      icon tech:postgresql
+      opacity 30%
     }
   }
-  element db_table {
+  element db-table {
     notation "Database Table"
     style {
       shape storage
+      icon tech:postgresql
     }
   }
 
-  tag deprecated
+  tag deprecated {
+    color rgb(100 100 100)
+  }
   tag next
-  tag v1  
+  tag v1
   tag v1_1
   tag v2
   tag teamA
@@ -65,5 +76,9 @@ specification {
 
   relationship solid {
     line solid
+  }
+
+  relationship many-to-many {
+    line dotted
   }
 }

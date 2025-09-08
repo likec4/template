@@ -1,12 +1,11 @@
 views {
   deployment view development-env {
-    title 'Environment: Development'
+    title 'Deployments / Environment: Development'
     description '
       Overview of the development environment.
     '
 
     include
-      dev,
       dev.**
   }
 }

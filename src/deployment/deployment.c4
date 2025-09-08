@@ -1,28 +1,14 @@
-specification {
-  deploymentNode internet {
-  }
-
-  deploymentNode environment {
-    notation 'Deployment Environment'
-    style {
-      opacity 0%
-    }
-  }
-
-  deploymentNode vm {
-    notation 'Virtual Machine'
-    style {
-      opacity 5%
-    }
-  }
-}
-
 deployment {
   dev = environment 'Development' {
     description 'Development environment.'
 
     developer = instanceOf customer {
       title 'Developer'
+      style {
+        size sm
+        textSize md
+        color green
+      }
     }
 
     devmachine = vm 'Developer Machine' {
@@ -31,18 +17,39 @@ deployment {
       instanceOf boutique.frontend
       instanceOf boutique.catalogue
       instanceOf boutique.cart
-      instanceOf boutique.checkout
     }
 
     containers = vm 'Shared Containers' {
-      instanceOf boutique.payments
-      instanceOf boutique.shipping
-      instanceOf boutique.db
+      instanceOf boutique.checkout {
+        icon tech:docker
+        technology 'docker container'
+        title 'Mocked Checkout Service'
+      }
+
+      instanceOf boutique.payments {
+        icon tech:docker
+        technology 'docker container'
+        title 'Mocked Payments Service'
+      }
+      instanceOf boutique.shipping {
+        icon tech:docker
+        technology 'docker container'
+        title 'Mocked Shipping Service'
+      }
+      instanceOf boutique.db {
+        title 'Development Database'
+      }
     }
   }
 
   internet internet {
-    instanceOf customer
+    instanceOf customer {
+      style {
+        size sm
+        textSize md
+        color green
+      }
+    }
   }
 
   prod = environment 'Production' {
@@ -61,6 +68,10 @@ deployment {
     }
 
     appvms = vm 'Application Servers (x2)' {
+      style {
+        multiple true
+      }
+
       instanceOf boutique.checkout
       instanceOf boutique.payments
       instanceOf boutique.shipping

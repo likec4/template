@@ -4,12 +4,19 @@ views {
     title 'System Landscape'
     include
       *
+
+    style boutique {
+      size large
+    }
   }
 
   view customer of customer {
-    description '
-      Customer interactions with the system.
-    '
+    description '''
+      **Customer** interactions with the system.
+
+    '''
+
+
     include
       *,
       -> boutique.*
@@ -24,6 +31,8 @@ views {
       *,
       customer with {
         size sm
+        textSize large
+        color green
       }
     exclude
       frontend -> actionLog,
@@ -39,6 +48,10 @@ views {
   }
 
   view frontend of boutique.frontend {
+    #teamA #v1_1 #v2
+    title 'Frontend'
+    link https://github.com/likec4/template 'Repository'
+
     include
       *,
       boutique
@@ -54,11 +67,20 @@ views {
   }
 
   view checkout of boutique.checkout {
-    description '
-      Retrieves user cart, prepares order and
-      orchestrates the payment, shipping and the email notification.
-    '
+    #teamB #v1_1 #v2
+    title 'Checkout Service'
+    description '''
+      Interactions of _Checkout Service_ with _other components_.
+
+      Checkout Service does:
+      - Retrieves user cart
+      - Prepares order
+      - Orchestrates the **payment**, **shipping** and the **email notification**.
+
+    '''
     link https://github.com/likec4/template 'Repository'
+
+
     include
       *,
       boutique,
@@ -69,7 +91,7 @@ views {
     style * {
       color secondary
     }
-    style boutique {
+    style boutique, email-provider, payment-gateway {
       color muted
       opacity 10%
     }
@@ -133,7 +155,6 @@ views {
   view shipping of boutique.shipping {
     include
       *,
-      -> boutique.db.*,
       boutique
 
     style * {
@@ -150,11 +171,13 @@ views {
       *,
       boutique
 
-    style boutique {
+    style * {
+      color secondary
       opacity 0%
     }
-    style boutique.db._ {
-      icon tech:postgresql
+    style db._ {
+      opacity 20%
+      color green
     }
   }
 

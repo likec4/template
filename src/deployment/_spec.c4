@@ -1,0 +1,19 @@
+specification {
+  deploymentNode internet {
+    title 'Internet'
+  }
+
+  deploymentNode environment {
+    notation 'Deployment Environment'
+    style {
+      opacity 0%
+    }
+  }
+
+  deploymentNode vm {
+    notation 'Virtual Machine'
+    style {
+      opacity 5%
+    }
+  }
+}

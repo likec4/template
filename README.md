@@ -4,16 +4,24 @@ This template is a simple example of how to use LikeC4.
 Contains:
 
 - LikeC4 sources ([`/src`](./src/))
+- Model validation ([`/test/validate-model.spec.ts`](./test/validate-model.spec.ts))
 - Deploy to github pages ([`pages.yml`](./.github/workflows/pages.yml))
+- Project configuration with custom generator ([`likec4.config.ts`](./likec4.config.ts))  
 
 Demo - [https://template.likec4.dev](https://template.likec4.dev/view/cloud)
 
 Try it online:
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/likec4/template?file=src%2Fmodel.c4&initialpath=%2Fview%2Findex)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/~/github.com/likec4/template)
 
-> StackBlitz does not support extensions, so do not expect validation, syntax highlighting and other features in likec4 files.  
-> Try this template online with [github.dev](https://github.dev/likec4/template/blob/main/src/model.c4) and install extension.
+Or:
+-  [github.dev](https://github.dev/likec4/template/blob/main/src/model.c4)
+-  [vscode.dev](https://vscode.dev/github/likec4/template/src/model.c4)
+
+> You will get popup suggesting to install "LikeC4" extension.  
+> Agree to get syntax highlighting, completions and other features in likec4 files
+> 
+> Try this template online with and install extension.
 
 ## How-to
 
@@ -26,9 +34,9 @@ Now you can edit likec4 sources, refactor, navigate and preview diagrams.
 ### CLI
 
 You can install globally, locally and use scripts from `package.json`, or just via `npx`  
-Check [how to install likec4](https://github.com/likec4/likec4/tree/main/packages/likec4#install)  
+Check [documentation](https://likec4.dev/tooling/cli/)  
 
-> LikeC4 requires Node.js version 18+, 20+  
+> LikeC4 requires Node.js version 20+  
 
 To start local server with live reload (for development or quick preview)  
 Inside the project folder:
@@ -44,6 +52,24 @@ npx likec4 export png -o png
 ```
 
 Documentation: https://likec4.dev/docs/tools/cli/
+
+### Custom generator
+
+[`likec4.config.ts`](./likec4.config.ts) includes an example of custom generator that generates CSV file with relationships:
+
+```bash
+npm run generate:relationships-csv
+```
+
+### Model validation
+
+[`test/validate-model.spec.ts`](./test/validate-model.spec.ts) includes an example of model validation tests:
+
+```bash
+npm run test
+```
+
+> Check [documentation](https://likec4.dev/guides/validate-your-model/) for more details
 
 ### Deployment
 

@@ -1,26 +1,34 @@
-views {
+views 'Use Cases' {
 
   dynamic view order-fulfillment {
+    #teamB #v1_1 #v2
     title 'Usecase 02: Order Fulfillment'
-    description '
-      This use case describes the process of fulfilling an order.
-    '
+    description '''
+      This view describes the process of fulfilling an order.
+
+    '''
 
     customer -> boutique 'places order' {
       navigateTo place-order
-      notes '
-        The customer interacts with the web application to place an order.
-      '
+      notes '''
+
+        Customer _interacts_ with the web application to place an order.    
+
+      '''
     }
     payment-gateway <- boutique 'initiates payment' {
-      notes '
-        Payment service initiates payment processing, which may take a few seconds to a few minutes.
-      '
+      notes '''
+
+        Payment service **initiates payment** processing, which may take a _few seconds to a few minutes_.
+
+      '''
     }
     payment-gateway -> boutique.payments 'confirms payment with webnook' {
-      notes '
-        When customer completes the payment, the payment gateway sends a confirmation as a webhook.
-      '
+      notes '''
+
+        When customer completes the payment, the payment gateway sends a **confirmation** as a webhook.
+
+      '''
     }
     boutique.payments -> boutique.checkout 'confirms pending payment'
 

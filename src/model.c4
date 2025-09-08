@@ -1,6 +1,7 @@
 model {
 
   customer = actor 'Customer' {
+    -> boutique 'uses'
     -> boutique.frontend 'browses and buys products' {
       navigateTo place-order
       link https://github.com/likec4/template 'Repository'
@@ -8,11 +9,11 @@ model {
     -> boutique.frontend.catalogue 'browses products'
     -> boutique.frontend.checkout 'buys products' {
       navigateTo place-order
+      link https://github.com/likec4/template 'Repository'
       link https://github.com/likec4/template/issues 'Issues'
     }
     -> boutique.frontend.profile 'manages account and reviews history'
   }
-  customer -> boutique 'uses'
 
   boutique = system 'Online Boutique System' {
 
@@ -20,8 +21,7 @@ model {
     link ./model.c4#L18 'Model'
 
     description '
-      E-commerce app for browsing items, add them to the cart,
-      and purchasing them.
+      E-commerce app for browsing and purchasing various items.
     '
 
     email = service 'Email Service' {
@@ -32,12 +32,16 @@ model {
 
     checkout = service 'Checkout Service' {
       #teamB
-      icon tech:nodejs    
-      description 'Retrieves user cart, prepares order and orchestrates the payment, shipping and the email notification.'
-      link https://github.com/likec4/template 'Repository'
+      icon tech:nodejs
+      technology 'Node.js'
+      description '''
+        Retrieves _user cart_, prepares _order_ and orchestrates _payment_, _shipping_ and _email_ notifications.
+
+      '''
+
       metadata {
         npm '@boutique/checkout'
-        version: '1.0.0'
+        version '1.0.0'
       }
 
       -> payments.processor 'sends payment request' {
@@ -45,7 +49,7 @@ model {
       }
       -> shipping 'sends checkout data' {
         navigateTo order-fulfillment
-      }      
+      }
       -> email 'sends order confirmation'
       -> actionLog 'sends activity data' #v2 #next
     }
@@ -53,6 +57,7 @@ model {
     cart = service 'Cart Service' {
       #teamA
       icon tech:nodejs
+      technology 'Node.js'
       description "Stores the items in the user's shopping cart in Redis and retrieves it."
 
       api = component 'Cart API' {
@@ -63,7 +68,7 @@ model {
         link https://github.com/likec4/template 'Repository'
         metadata {
           npm '@boutique/cart-api'
-          version: '1.0.0'
+          version : '1.0.0'
         }
       }
 
@@ -81,6 +86,7 @@ model {
 
     actionLog = service 'Action Log Service' {
       icon tech:go
+      technology 'Go'
       description 'Manages user activity and search history.'
     }
 
@@ -89,6 +95,8 @@ model {
       description 'Charges the given credit card info with the given amount and returns a transaction ID.'
 
       processor = component 'Payment Processor' {
+        icon tech:scala
+        technology 'Scala'
         description 'Charges the given credit card info with the given amount and returns a transaction ID.'
         -> payment-gateway 'processes payments' {
           navigateTo order-fulfillment
@@ -97,49 +105,60 @@ model {
       }
 
       currency = component 'Currency Service' {
-        description 'Converts one money amount to another currency.'
+        icon tech:scala
+        technology 'Scala'
+        description '''
+          **Converts** one money amount to _another currency_.
+
+        '''
       }
     }
 
     shipping = service 'Shipping Service' {
       icon tech:net
+      technology '.NET Service'
       description 'Gives shipping cost estimates based on the shopping cart. Ships items to the given address.'
 
-      -> db.orders 'updates shipping data'
+      // -> db.orders 'updates shipping data'
     }
 
     catalogue = service 'Product Catalogue Service' {
-      icon tech:fast-api
+      icon tech:python
+      technology 'Laravel'
       description 'Provides a list of products and ability to search products and get individual products.'
       -> db.products 'gets products'
     }
 
     frontend = webapp 'Frontend' {
+      #v1
       icon tech:vue
-      technology 'VUE SPA'
-      description 'Provides access to boutique services.'
+      technology 'Vue.js / TypeScript'
+      description 'Provides access to the services via the web interface'
 
-      -> actionLog 'sends user activity data'
+      this -> actionLog 'sends user activity data'
 
       catalogue = component 'Product Catalogue' {
+        #teamA #v1
         icon tech:vue
-        technology 'VUE single-page application'
-        description 'Displays products and allows users to search and view individual products.'
+        technology 'Vue.js / TypeScript'
+        description 'Displays products and allows users to search and view individual products'
       }
 
       checkout = component 'Checkout' {
+        #teamA #v1_1
         icon tech:vue
-        technology 'VUE single-page application'
-        description 'Allows users to review their cart, enter shipping information, and complete the purchase.'
+        technology 'Vue.js / TypeScript'
+        description 'Allows to review shopping cart, enter shipping details and proceed to the payment'
       }
 
       profile = component 'User Profile' {
+        #teamA #next #v2
         icon tech:vue
-        technology 'VUE single-page application'
+        technology 'Vue.js / TypeScript'
         description 'Displays user information and order history.'
       }
 
-      -> cart 'gets cart data'
+      this -> cart 'gets cart data'
       catalogue -> boutique.catalogue 'gets product data'
       catalogue -> cart.api 'puts items in cart'
       checkout -> payments.currency 'gets exchange rates'
@@ -152,37 +171,47 @@ model {
     }
 
     db = database 'Boutique Database' {
-      icon tech:postgresql
-      technology 'PostgreSQL'
-      description 'Stores all product, order, and user data.'
+      description '''
+        _Stores_ all **products**, **orders**, and **user data**.
 
-      products = db_table 'Products' {
+      '''
+
+      products = db-table 'Products' {
         description 'Stores all product data.'
       }
 
-      orders = db_table 'Orders' {
+      orders = db-table 'Orders' {
         description 'Stores all order data.'
       }
 
-      users = db_table 'Users' {
+      users = db-table 'Users' {
         description 'Stores all user data.'
       }
 
-      orders -> products
-      orders -> users
+      orders -[many-to-many]-> products {
+        title 'many-to-many'
+      }
+      orders -[many-to-many]-> users {
+        title 'many-to-many'
+      }
     }
   }
 
   payment-gateway = external-system 'Payment Gateway' {
-    description '
-      Platform to process online payments
-    '
+    technology 'Stripe'
+    description '''
+      _3rd-party_ Platform to process  
+      **online payments**
+
+    '''
   }
 
   email-provider = external-system 'Email Provider' {
-    description '
-      3rd Party Platform to send transactional emails
-    '
-  }
+    technology 'SendGrid'
+    description '''
+      _3rd-party_ Platform to send  
+      **transactional emails**
 
+    '''
+  }
 }

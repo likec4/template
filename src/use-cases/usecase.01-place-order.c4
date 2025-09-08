@@ -1,29 +1,49 @@
-views {
+views 'Use Cases' {
   dynamic view place-order {
+    #teamB #v1_1 #v2
     title 'Usecase 01: Placing an Order'
-    description '
-      This use case describes the process of placing an order.
-    '
+    description '''
+      This view describes the process of placing an order.
+
+    '''
 
     customer -> boutique.frontend 'places products in cart' {
-      notes '
-        The customer interacts with the web application to place an order.
-      '
+      notes '''
+
+        Customer _interacts_ with the web application to place an order.    
+
+      '''
     }
-    boutique.frontend -> boutique.cart 'creates or updates cart'
+    boutique.frontend -> boutique.cart 'creates or updates cart' {
+      technology 'POST /shopping-cart'
+    }
     customer -> boutique.frontend 'enters shipping information' {
       notes '
-        Custmer enters shipping information to get shipping cost estimates.
+        Customer enters shipping information to get shipping cost estimates.
       '
     }
-    customer -> boutique.frontend 'enters payment information' {
+    boutique.frontend -> boutique.cart 'creates or updates cart' {
+      technology 'POST /shopping-cart'
+    }
+    customer -> boutique.frontend 'enters payment details' {
       notes '
-        Customer enters payment information and confirms the order.
+        Customer enters payment details and confirms the order.
       '
     }
-    boutique.frontend -> boutique.checkout 'initiates payment'
+    boutique.frontend -> boutique.checkout 'initiates payment' {
+      technology 'POST /checkout'
+      notes '''
+        Frontend sends **POST** request to initiate payment processing.
 
-    boutique.checkout -> boutique.db 'persists order'
+      '''
+    }
+
+    boutique.checkout -> boutique.db 'writes new order' {
+      notes '
+        Checkout service retrieves the user\'s cart
+        and creates a new order in the database.
+      '
+    }
     boutique.checkout -> boutique.shipping 'reserves inventory' {
       notes '
         Reserving inventory is an asynchronous process that may take a few seconds.
@@ -61,6 +81,7 @@ views {
       '
     }
     boutique.checkout <- boutique.payments
+
     parallel {
       boutique.checkout -> boutique.shipping 'requests fulfillment' {
         navigateTo order-fulfillment
@@ -85,6 +106,9 @@ views {
         color gray
         opacity 10%
       }
+    style * {
+      color secondary
+    }
     style customer {
       color green
     }
