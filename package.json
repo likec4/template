@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "description": "LikeC4 template",
+  "type": "module",
   "scripts": {
     "start": "likec4 start",
     "dev": "likec4 start",

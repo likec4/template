@@ -1,4 +1,5 @@
 {
-  "editor.codeLens": true,
-  "files.exclude": {}
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "editor.codeLens": true
 }

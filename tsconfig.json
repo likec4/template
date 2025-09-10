@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "module": "preserve",
+    "lib": [
+      "ESNext"
+    ],
+    "noEmit": true,
+    "strict": true,
+    "strictBuiltinIteratorReturn": true
+  }
+}
