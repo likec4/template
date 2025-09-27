@@ -1,6 +1,6 @@
 # LikeC4 Template
 
-This template is a simple example of how to use LikeC4.  
+This template is an example of how to use LikeC4.  
 Contains:
 
 - LikeC4 sources ([`/src`](./src/))
@@ -12,7 +12,7 @@ Demo - [https://template.likec4.dev](https://template.likec4.dev/view/cloud)
 
 Try it online:
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/~/github.com/likec4/template)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/~/github.com/likec4/template?file=src/model.c4)
 
 Or:
 -  [github.dev](https://github.dev/likec4/template/blob/main/src/model.c4)
@@ -20,8 +20,6 @@ Or:
 
 > You will get popup suggesting to install "LikeC4" extension.  
 > Agree to get syntax highlighting, completions and other features in likec4 files
-> 
-> Try this template online with and install extension.
 
 ## How-to
 

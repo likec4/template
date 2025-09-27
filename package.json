@@ -4,6 +4,10 @@
   "private": true,
   "description": "LikeC4 template",
   "type": "module",
+  "packageManager": "pnpm@^8.15.6",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "likec4 start",
     "dev": "likec4 start",
@@ -16,9 +20,12 @@
     "export:png": "likec4 export png -o ./png"
   },
   "devDependencies": {
-    "@types/node": "^24.3.1",
+    "@types/node": "^22.18.6",
     "likec4": "latest",
     "vitest": "^3.2.4",
     "typescript": "^5.9.2"
+  },
+  "stackblitz": {
+    "installDependencies": true
   }
 }
