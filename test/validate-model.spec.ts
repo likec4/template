@@ -1,7 +1,7 @@
 import { test } from 'vitest'
 import { likec4model } from './likec4-model'
 
-test('Every service has a link to the repository', ({expect }) => {
+test('Every service has a link to the repository', ({ expect }) => {
   expect.hasAssertions()
   for (const e of likec4model.elementsOfKind('service')) {
     // expect.soft allows to accumulate all failures
@@ -12,7 +12,7 @@ test('Every service has a link to the repository', ({expect }) => {
   }
 })
 
-test('Many-to-many relationship allowed only between DB Tables', ({expect }) => {
+test('Many-to-many relationship allowed only between DB Tables', ({ expect }) => {
   for (const r of likec4model.relationshipsWhere({ kind: 'many-to-many' })) {
     expect.soft(
       r.source.kind === 'db-table',
@@ -28,12 +28,10 @@ test('Many-to-many relationship allowed only between DB Tables', ({expect }) => 
 // With `test.for` we generate tests for each element of kind `component`
 // This improves the output, showing each test failure separately
 test.for(
-  likec4model
-    // Select elements of kind `app`
-    .elementsWhere({ kind: 'component' })
+  // Select elements of kind `app`
+  [...likec4model.elementsWhere({ kind: 'component' })]
     // Map to array of [id, element] tuples, we need it for test names
     .map(e => [e.id, e] as const)
-    .toArray(),
 )('Component "%s" has technology', ([, e], { expect }) => {
   expect(e.technology).toBeTruthy()
 })
