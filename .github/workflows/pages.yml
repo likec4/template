@@ -29,18 +29,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: npm install
+        run: bun install
 
       - name: Validate
-        run: npm run test
+        run: bun run test
 
   # Build job
   build-pages:
@@ -48,22 +46,33 @@ jobs:
     needs: validate
     steps:
       - name: Checkout
-        uses: actions/checkout@v4     
+        uses: actions/checkout@v5    
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v2        
 
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
-        
+
+      # Build step using likec4/actions
+      # - name: Build
+      #   uses: likec4/actions@v1
+      #   with:
+      #     action: build
+      #     output: dist
+      #     # required if you don't set a custom domain for the repository
+      #     # https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites
+      #     base: ${{ steps.pages.outputs.base_path }}
+      #     # (optional) by default, the bundled version is used, which is faster due to skipping the installation
+      #     likec4-version: latest
+
+      # Prefer to use LikeC4 CLI directly in your scripts for more control.
       - name: Build
-        uses: likec4/actions@v1
-        with:
-          action: build
-          output: dist
-          # required if you don't set a custom domain for the repository
-          # https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites
-          base: ${{ steps.pages.outputs.base_path }}
-          # (optional) by default, the bundled version is used, which is faster due to skipping the installation
-          likec4-version: latest
+        run: |
+          bunx likec4@latest build \
+            --base ${{ steps.pages.outputs.base_path }} \
+            --output dist      
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
