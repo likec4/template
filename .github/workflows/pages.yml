@@ -71,7 +71,7 @@ jobs:
       - name: Build
         run: |
           bunx likec4@latest build \
-            --base ${{ steps.pages.outputs.base_path }} \
+            --base "${{ steps.pages.outputs.base_path || '/' }}" \
             --output dist      
           
       - name: Upload artifact
